@@ -13,8 +13,16 @@ ENTRY_TEXT = (
     "to revolve around it. Would not orbit again."
 )
 
+# The sealed gate only accepts 1-120 characters: refuse loudly here rather
+# than shipping an entry the judge never sees.
+MAX_CHARS = 120
+
 
 def main() -> None:
+    if not 1 <= len(ENTRY_TEXT) <= MAX_CHARS:
+        raise ValueError(
+            f"entry must be 1-{MAX_CHARS} characters, got {len(ENTRY_TEXT)}"
+        )
     output_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(output_dir, exist_ok=True)
     path = os.path.join(output_dir, "entry.txt")
